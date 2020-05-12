@@ -111,7 +111,7 @@ describe('01-strings-tasks', () => {
     assert.equal(tasks.isString(new String('test')), true, "new String('test')");
   });
 
-  it.optional('getCardId should return the index of card in the initial deck', () => {
+  it.only('getCardId should return the index of card in the initial deck', () => {
     [
       'A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
       'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
