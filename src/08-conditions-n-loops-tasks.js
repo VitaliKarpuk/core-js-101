@@ -27,8 +27,12 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+// eslint-disable-next-line consistent-return
+function getFizzBuzz(num) {
+  if (num % 5 === 0 && num % 3 === 0) return 'FizzBuzz';
+  if (num % 5 === 0) return 'Buzz';
+  if (num % 3 === 0) return 'Fizz';
+  return num;
 }
 
 
@@ -43,8 +47,13 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  let res = 1;
+  for (let i = 1; i <= n;) {
+    res *= i;
+    i = 1 + i;
+  }
+  return res;
 }
 
 
@@ -60,8 +69,13 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let sum = 0;
+  for (let i = n1; i <= n2;) {
+    sum += i;
+    i = 1 + i;
+  }
+  return sum;
 }
 
 
@@ -80,8 +94,11 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  if (a + b > c && a + c > b && c + b > a) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -117,8 +134,11 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  if (rect1.left + rect1.width > rect2.left && rect1.top + rect1.height > rect2.top) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -148,8 +168,12 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const len = (Math.sqrt((circle.center.x - point.x) ** 2 + (circle.center.y - point.y) ** 2));
+  if (len < circle.radius) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -164,8 +188,20 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const arr = str.split('');
+  for (let i = 0; i < arr.length;) {
+    let count = 0;
+    for (let j = 0; j < arr.length;) {
+      if (arr[i] === arr[j]) {
+        count = 1 + count;
+      }
+      j += 1;
+    }
+    if (count === 1) return arr[i];
+    i += 1;
+  }
+  return null;
 }
 
 
@@ -191,8 +227,15 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let z1 = '(';
+  let z2 = ')';
+  if (isStartIncluded) z1 = '[';
+  if (isEndIncluded) z2 = ']';
+  if (a < b) {
+    return `${z1}${a}, ${b}${z2}`;
+  }
+  return `${z1}${b}, ${a}${z2}`;
 }
 
 
@@ -208,8 +251,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return [...str].reverse().join('');
 }
 
 
@@ -225,8 +268,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -250,8 +293,24 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const arr = [];
+  const ccn1 = ccn.toString().split('').reverse().join('');
+  for (let i = 0; i < ccn1.length; i = 1 + i) {
+    if (i % 2 !== 0) {
+      const m = +ccn1[i] * 2;
+      if (m > 9) {
+        arr.push(m - 9);
+      } else {
+        arr.push(m);
+      }
+    } else {
+      const n = +ccn1[i];
+      arr.push(n);
+    }
+  }
+  const sum = arr.reduce((a, b) => a + b);
+  return sum % 10 === 0;
 }
 
 /**
@@ -268,8 +327,15 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let res;
+  function f(num1) {
+    const arr = num1.toString().split('');
+    res = arr.reduce((acc, item) => +acc + +item);
+  }
+  f(num);
+  if (res > 9) f(res);
+  return res;
 }
 
 
@@ -294,108 +360,206 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+// eslint-disable-next-line consistent-return
+function isBracketsBalanced(str) {
+  const buffer = [];
+  for (let i = 0; i < str.length; i = 1 + i) {
+    switch (str[i]) {
+      case '[': buffer.push(str[i]);
+        break;
+      case '(': buffer.push(str[i]);
+        break;
+      case '{': buffer.push(str[i]);
+        break;
+      case '<': buffer.push(str[i]);
+        break;
+
+      case ']': if (buffer.pop() !== '[') return false;
+        break;
+      case ')': if (buffer.pop() !== '(') return false;
+        break;
+      case '}': if (buffer.pop() !== '{') return false;
+        break;
+      case '>': if (buffer.pop() !== '<') return false;
+        break;
+      default:
+        break;
+    }
+  }
+  return (buffer.length === 0);
+}
+/**
+   * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
+   * representation of specified number.
+   * See more about
+   * https://en.wikipedia.org/wiki/Binary_number
+   * https://en.wikipedia.org/wiki/Ternary_numeral_system
+   * https://en.wikipedia.org/wiki/Radix
+   *
+   * @param {number} num
+   * @param {number} n, radix of the result
+   * @return {string}
+   *
+   * @example:
+   *   1024, 2  => '10000000000'
+   *   6561, 3  => '100000000'
+   *    365, 2  => '101101101'
+   *    365, 3  => '111112'
+   *    365, 4  => '11231'
+   *    365, 10 => '365'
+   */
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
 /**
- * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
- * representation of specified number.
- * See more about
- * https://en.wikipedia.org/wiki/Binary_number
- * https://en.wikipedia.org/wiki/Ternary_numeral_system
- * https://en.wikipedia.org/wiki/Radix
- *
- * @param {number} num
- * @param {number} n, radix of the result
- * @return {string}
- *
- * @example:
- *   1024, 2  => '10000000000'
- *   6561, 3  => '100000000'
- *    365, 2  => '101101101'
- *    365, 3  => '111112'
- *    365, 4  => '11231'
- *    365, 10 => '365'
- */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+   * Returns the commom directory path for specified array of full filenames.
+   *
+   * @param {array} pathes
+   * @return {string}
+   *
+   * @example:
+   *   ['/web/images/image1.png', '/web/images/image2.png']  => '/web/images/'
+   *   ['/web/assets/style.css', '/web/scripts/app.js',  'home/setting.conf'] => ''
+   *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
+   *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
+   */
+function getCommonDirectoryPath(pathes) {
+  const res = [];
+  const arr = [];
+  for (let i = 0; i < pathes.length; i = 1 + i) {
+    arr[i] = pathes[i].split('/');
+  }
+
+  if (arr.length === 2) {
+    for (let j = 0; j < arr[0].length; j = 1 + j) {
+      if (arr[0][j] === arr[1][j]) {
+        res.push(`${arr[0][j]}`);
+      }
+    }
+  }
+
+  if (arr.length === 3) {
+    for (let j = 0; j < pathes.length; j = 1 + j) {
+      if (arr[0][j] === arr[1][j] && arr[1][j] === arr[2][j] && arr[0][j] === '') {
+        res.push('/');
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+      if (arr[0][j] === arr[1][j] && arr[1][j] === arr[2][j]) {
+        res.push(`${arr[0][j]}`);
+      }
+    }
+  }
+
+  const x = res.join('/');
+  if (x === '') return '';
+  if (x === '/') return '/';
+  return `${x}/`;
 }
 
 
 /**
- * Returns the commom directory path for specified array of full filenames.
- *
- * @param {array} pathes
- * @return {string}
- *
- * @example:
- *   ['/web/images/image1.png', '/web/images/image2.png']  => '/web/images/'
- *   ['/web/assets/style.css', '/web/scripts/app.js',  'home/setting.conf'] => ''
- *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
- *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
- */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+   * Returns the product of two specified matrixes.
+   * See details: https://en.wikipedia.org/wiki/Matrix_multiplication
+   *
+   * @param {array} m1
+   * @param {array} m2
+   * @return {array}
+   *
+   * @example:
+   *   [[ 1, 0, 0 ],       [[ 1, 2, 3 ],           [[ 1, 2, 3 ],
+   *    [ 0, 1, 0 ],   X    [ 4, 5, 6 ],     =>     [ 4, 5, 6 ],
+   *    [ 0, 0, 1 ]]        [ 7, 8, 9 ]]            [ 7, 8, 9 ]]
+   *
+   *                        [[ 4 ],
+   *   [[ 1, 2, 3]]    X     [ 5 ],          =>     [[ 32 ]]
+   *                         [ 6 ]]
+   *
+   */
+function getMatrixProduct(m1, m2) {
+  const aNumRows = m1.length;
+  const aNumCols = m1[0].length;
+  const bNumCols = m2[0].length;
+  const m = new Array(aNumRows);
+  for (let r = 0; r < aNumRows; r = 1 + r) {
+    m[r] = new Array(bNumCols);
+    for (let c = 0; c < bNumCols; c = 1 + c) {
+      m[r][c] = 0;
+      for (let i = 0; i < aNumCols; i = 1 + i) {
+        m[r][c] += m1[r][i] * m2[i][c];
+      }
+    }
+  }
+  return m;
 }
 
 
 /**
- * Returns the product of two specified matrixes.
- * See details: https://en.wikipedia.org/wiki/Matrix_multiplication
- *
- * @param {array} m1
- * @param {array} m2
- * @return {array}
- *
- * @example:
- *   [[ 1, 0, 0 ],       [[ 1, 2, 3 ],           [[ 1, 2, 3 ],
- *    [ 0, 1, 0 ],   X    [ 4, 5, 6 ],     =>     [ 4, 5, 6 ],
- *    [ 0, 0, 1 ]]        [ 7, 8, 9 ]]            [ 7, 8, 9 ]]
- *
- *                        [[ 4 ],
- *   [[ 1, 2, 3]]    X     [ 5 ],          =>     [[ 32 ]]
- *                         [ 6 ]]
- *
- */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
-}
-
-
-/**
- * Returns the evaluation of the specified tic-tac-toe position.
- * See the details: https://en.wikipedia.org/wiki/Tic-tac-toe
- *
- * Position is provides as 3x3 array with the following values: 'X','0', undefined
- * Function should return who is winner in the current position according to the game rules.
- * The result can be: 'X','0',undefined
- *
- * @param {array} position
- * @return {string}
- *
- * @example
- *
- *   [[ 'X',   ,'0' ],
- *    [    ,'X','0' ],       =>  'X'
- *    [    ,   ,'X' ]]
- *
- *   [[ '0','0','0' ],
- *    [    ,'X',    ],       =>  '0'
- *    [ 'X',   ,'X' ]]
- *
- *   [[ '0','X','0' ],
- *    [    ,'X',    ],       =>  undefined
- *    [ 'X','0','X' ]]
- *
- *   [[    ,   ,    ],
- *    [    ,   ,    ],       =>  undefined
- *    [    ,   ,    ]]
- *
- */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+   * Returns the evaluation of the specified tic-tac-toe position.
+   * See the details: https://en.wikipedia.org/wiki/Tic-tac-toe
+   *
+   * Position is provides as 3x3 array with the following values: 'X','0', undefined
+   * Function should return who is winner in the current position according to the game rules.
+   * The result can be: 'X','0',undefined
+   *
+   * @param {array} position
+   * @return {string}
+   *
+   * @example
+   *
+   *   [[ 'X',   ,'0' ],
+   *    [    ,'X','0' ],       =>  'X'
+   *    [    ,   ,'X' ]]
+   *
+   *   [[ '0','0','0' ],
+   *    [    ,'X',    ],       =>  '0'
+   *    [ 'X',   ,'X' ]]
+   *
+   *   [[ '0','X','0' ],
+   *    [    ,'X',    ],       =>  undefined
+   *    [ 'X','0','X' ]]
+   *
+   *   [[    ,   ,    ],
+   *    [    ,   ,    ],       =>  undefined
+   *    [    ,   ,    ]]
+   *
+   */
+function evaluateTicTacToePosition(position) {
+  if ((position[0][0] === position[0][1]) && (position[0][0] === position[0][2])
+      && (position[0][0] !== undefined)) {
+    return position[0][0];
+  }
+  if ((position[1][0] === position[1][1]) && (position[1][0] === position[1][2])
+      && (position[1][0] !== undefined)) {
+    return position[1][0];
+  }
+  if ((position[2][0] === position[2][1]) && (position[2][0] === position[2][2])
+      && (position[2][0] !== undefined)) {
+    return position[2][0];
+  }
+  if ((position[0][0] === position[1][0]) && (position[0][0] === position[2][0])
+      && (position[0][0] !== undefined)) {
+    return position[0][0];
+  }
+  if ((position[0][1] === position[1][1]) && (position[0][1] === position[2][1])
+      && (position[0][1] !== undefined)) {
+    return position[0][1];
+  }
+  if ((position[0][2] === position[1][2]) && (position[0][2] === position[2][2])
+      && (position[0][2] !== undefined)) {
+    return position[0][2];
+  }
+  if ((position[0][0] === position[1][1]) && (position[0][0] === position[2][2])
+      && (position[0][0] !== undefined)) {
+    return position[0][0];
+  }
+  if ((position[2][0] === position[1][1]) && (position[2][0] === position[0][2])
+      && (position[2][0] !== undefined)) {
+    return position[2][0];
+  }
+  return undefined;
 }
 
 
