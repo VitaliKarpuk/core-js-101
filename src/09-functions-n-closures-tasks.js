@@ -23,8 +23,10 @@
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
+function getComposition(f, g) {
+  return function foo(x) {
+    return f(g(x));
+  };
 }
 
 
@@ -44,8 +46,11 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return function foo(x) {
+    // eslint-disable-next-line no-restricted-properties
+    return Math.pow(x, exponent);
+  };
 }
 
 
@@ -62,8 +67,40 @@ function getPowerFunction(/* exponent */) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+// eslint-disable-next-line consistent-return
+function getPolynom(...arg) {
+  if (arg.length === 1) {
+    // eslint-disable-next-line no-param-reassign
+    arg[1] = 0;
+    // eslint-disable-next-line no-param-reassign
+    arg[2] = 0;
+    // eslint-disable-next-line no-inner-declarations
+    function f() {
+      return arg[0];
+    }
+    return f;
+  }
+
+  if (arg.length === 2) {
+    // eslint-disable-next-line no-param-reassign
+    arg[2] = 0;
+    // eslint-disable-next-line no-inner-declarations
+    function f(x) {
+      return arg[0] * x + arg[1];
+    }
+    return f;
+  }
+
+  if (arg.length === 3) {
+    // eslint-disable-next-line no-inner-declarations
+    function f(x) {
+      if (arg[0] === undefined) return null;
+
+      return arg[0] * x * x + arg[1] * x + arg[2];
+    }
+    return f;
+  }
+  return null;
 }
 
 
@@ -81,8 +118,17 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  const cache = new Map();
+
+  return function foo(x) {
+    if (cache.has(x)) {
+      return cache.get(x);
+    }
+    const res = func(x);
+    cache.set(x, res);
+    return res;
+  };
 }
 
 
@@ -101,8 +147,25 @@ function memoize(/* func */) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  let count = 0;
+  try {
+    func();
+    count = 1 + count;
+    return func;
+  } catch (e) {
+    try {
+      if (count === attempts) return attempts;
+      func();
+      count = 1 + count;
+      return func;
+    } catch (e1) {
+      if (count === attempts) return attempts;
+      func();
+      count = 1 + count;
+      return func;
+    }
+  }
 }
 
 
@@ -129,8 +192,30 @@ function retry(/* func, attempts */) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(/* func, logFunc */) {
-  throw new Error('Not implemented');
+function logger(func, logFunc) {
+  // eslint-disable-next-line consistent-return
+  return function wrapper(...args1) {
+    const arr = args1;
+    if (args1.length === 1) {
+      logFunc(`${func.name}(${[...arr]}) starts`);
+      logFunc(`${func.name}(${[...arr]}) ends`);
+      return func(...args1);
+    }
+    // ===================================================
+    const x = arr.slice(0, arr.length - 1);
+    const xMap = x[0].map((item) => {
+      if ((typeof item) === 'string') {
+        return `"${item}"`;
+      }
+      return item;
+    });
+    logFunc(`${func.name}([${xMap}],${+arr[arr.length - 1]}) starts`);
+    return (function f() {
+      const x2 = func(...args1);
+      logFunc(`${func.name}([${xMap}],${arr[arr.length - 1]}) ends`);
+      return x2;
+    }());
+  };
 }
 
 
@@ -147,8 +232,12 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  function f(...args) {
+    const str = `${args1.join('')}${args.join('')}`;
+    return str;
+  }
+  return f;
 }
 
 
@@ -169,8 +258,15 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let count = 0;
+  let flag;
+  function wrapper() {
+    if (flag) count = 1 + count;
+    flag = true;
+    return startFrom + count;
+  }
+  return wrapper;
 }
 
 

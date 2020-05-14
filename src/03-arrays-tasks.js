@@ -36,7 +36,14 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  return len.le;
+  let i = 1;
+  const arr = [];
+  do {
+    arr.push(i);
+    i = 2 + i;
+  } while (i <= (len * 2 - 1));
+
+  return arr;
 }
 
 
@@ -275,8 +282,12 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  const arr2 = arr.map((item, index) => {
+    const arr3 = new Array(index + 1);
+    return arr3.fill(item);
+  });
+  return arr2.reduce((acc, val) => acc.concat(val), []);
 }
 
 
